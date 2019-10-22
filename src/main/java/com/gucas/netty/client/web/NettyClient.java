@@ -62,9 +62,9 @@ public class NettyClient {
         }
     }
 
-    public void sendData(){
+    public void sendData() {
 
-        for(int i =0; i <10; i++){
+        for (int i = 0; i < 10; i++) {
             TranslatorData request = new TranslatorData();
             request.setId("" + i);
             request.setName("请求消息名称 " + i);
@@ -73,10 +73,14 @@ public class NettyClient {
         }
     }
 
-    public void close() throws Exception {
-        cf.channel().closeFuture().sync();
+    public void close() {
         //优雅停机
-        workGroup.shutdownGracefully();
-        System.err.println("Sever ShutDown...");
+        try {
+            cf.channel().closeFuture().sync();
+            workGroup.shutdownGracefully();
+            System.err.println("Sever ShutDown...");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
