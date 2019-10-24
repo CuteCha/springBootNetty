@@ -3,10 +3,6 @@ package com.gucas.common.disruptor;
 import com.gucas.common.entity.TranslatorDataWapper;
 import com.lmax.disruptor.WorkHandler;
 
-/**
- * @author Alienware
- *
- */
 public abstract class MessageConsumer implements WorkHandler<TranslatorDataWapper> {
 
 	protected String consumerId;

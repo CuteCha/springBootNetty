@@ -75,7 +75,6 @@ public class RingBufferWorkerPoolFactory {
 	
 	/**
 	 * 异常静态类
-	 * @author Alienware
 	 *
 	 */
 	static class EventExceptionHandler implements ExceptionHandler<TranslatorDataWapper> {

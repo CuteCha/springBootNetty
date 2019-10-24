@@ -1,5 +1,7 @@
 package com.gucas.netty.server.web;
 
+import com.gucas.common.disruptor.MessageProducer;
+import com.gucas.common.disruptor.RingBufferWorkerPoolFactory;
 import com.gucas.common.entity.TranslatorData;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -9,7 +11,13 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  */
 public class ServerHandler extends ChannelInboundHandlerAdapter {
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+//        processor1(ctx, msg);
+        processor2(ctx, msg);
+
+    }
+
+    private void processor1(ChannelHandlerContext ctx, Object msg) {
         TranslatorData request = (TranslatorData) msg;
         System.err.println("Sever端: id= " + request.getId()
                 + ", name= " + request.getName()
@@ -21,6 +29,12 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         response.setMessage("resp: " + request.getMessage());
         //写出response响应信息:
         ctx.writeAndFlush(response);
+    }
 
+    private void processor2(ChannelHandlerContext ctx, Object msg) {
+        TranslatorData request = (TranslatorData) msg;
+        String producerId = "code:sessionId:0001";
+        MessageProducer messageProducer = RingBufferWorkerPoolFactory.getInstance().getMessageProducer(producerId);
+        messageProducer.onData(request, ctx);
     }
 }
